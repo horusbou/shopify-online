@@ -1,0 +1,81 @@
+# Node.js dependencies
+/node_modules
+/.pnp
+.pnp.js
+.gitconfig
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Build files (React & Node.js)
+build/
+dist/
+coverage/
+
+# Next.js cache (if applicable)
+.next/
+
+# Parcel cache (if applicable)
+.cache/
+
+# React Native (if applicable)
+.expo/
+.expo-shared/
+
+# Static bundler cache
+.vite/
+.vscode/
+.sass-cache/
+.eslintcache
+.stylelintcache
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+
+# IDE files
+.idea/
+*.iml
+*.sublime-workspace
+*.sublime-project
+.DS_Store
+Thumbs.db
+.vscode/settings.json
+.vscode/tasks.json
+.vscode/launch.json
+.vscode/*.code-workspace
+
+# Test coverage and test reports
+coverage/
+*.lcov
+
+# Mac-specific files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Build artifacts
+*.log
+*.lock
+*.cache
+
+# Backend-specific files
+/tmp/
+*.pid
+
+# Docker files
+docker-compose.override.yml
+docker-compose.override.*
+
+# Ignore sensitive keys
+**/keys/
+**/certs/
+
