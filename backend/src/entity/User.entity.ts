@@ -35,6 +35,9 @@ export abstract class User {
   @Column({ type: "enum", enum: ["vendor", "customer", "admin"], default: "customer" })
   role: "vendor" | "customer" | "admin";
 
+  @Column({type:"bool", default:true})
+  isActive:boolean;
+
   @OneToOne(() => Session, session => session.user)
   session: Session
 

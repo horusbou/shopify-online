@@ -21,6 +21,9 @@ export class Product {
   @Column()
   amount: number;
 
+  @Column({default:''})
+  description:string;
+
   @OneToMany(() => CartProduct, (cartProduct) => cartProduct.product)
   cartProducts: CartProduct[];
 
