@@ -3,6 +3,7 @@ import { ProductController } from "../controller/product.controller";
 import requiresUser from "../middleware/requiresUser.middleware";
 import multer, { StorageEngine } from "multer";
 import path from "path";
+import checkRole from "../middleware/checkRole";
 
 const express = require('express');
 
@@ -23,11 +24,11 @@ prodRoutes.get(
   '/products',
   ProductController.getAllProduct
 );
-prodRoutes.post("/products", upload.single('image') ,ProductController.createProduct)
+prodRoutes.post("/products", upload.single('image') , requiresUser,checkRole(["admin"]) ,ProductController.createProduct)
 
-prodRoutes.post("/products/:product_id",ProductController.updateProduct)
+prodRoutes.post("/products/:product_id",checkRole(["admin"]),ProductController.updateProduct)
 prodRoutes.get("/products/:product_id",ProductController.getProduct)
-prodRoutes.delete("/products/:product_id",ProductController.deleteProduct)
+prodRoutes.delete("/products/:product_id",checkRole(["admin"]),ProductController.deleteProduct)
 
 
 

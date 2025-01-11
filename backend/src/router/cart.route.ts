@@ -18,7 +18,8 @@ cartRoutes.get(
 );
 
 cartRoutes.post(
-    "/cart",requiresUser,
+    "/cart",
+    requiresUser,
     CartController.addProductToCart
 )
 cartRoutes.delete(

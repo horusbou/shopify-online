@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 
 const checkRole = (requiredRoles: string[]) => {
   return (req: Request, res: Response, next: NextFunction) => {
+    //@ts-ignore
     const user = req.user;
 
     if (!user) {
