@@ -25,6 +25,7 @@ prodRoutes.get(
 );
 prodRoutes.post("/products", upload.single('image') ,ProductController.createProduct)
 
+prodRoutes.post("/products/:product_id",ProductController.updateProduct)
 prodRoutes.get("/products/:product_id",ProductController.getProduct)
 prodRoutes.delete("/products/:product_id",ProductController.deleteProduct)
 

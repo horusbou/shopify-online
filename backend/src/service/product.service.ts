@@ -1,8 +1,19 @@
 import db from "../database";
 import { Product, User } from "../entity";
 import { DeleteResult } from "typeorm";
+import HttpException from "../lib/HttpException";
 
 export class ProductService {
+  static async updateProduct(product_id: string,productData:Partial<Product>) {
+    const product = await db.products.findOne({ where: { id:product_id } });
+    if (!product) {
+      throw new HttpException(400,'Product not found');
+    }
+  
+    Object.assign(product, productData);
+    
+    await db.products.save(product);  
+  }
   static async getProductsByVendor(vendor_id: string):Promise<Product[]> {
     const products = await db.products.find({ where: { vendor: { id: vendor_id } } });
     return products;

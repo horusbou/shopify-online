@@ -34,7 +34,12 @@ export class ProductController {
       let products = await ProductService.getAllProduct()
       return res.json(products)
   }
-
+  static async updateProduct(req: Request, res: Response) {
+    let {product_id} = req.params
+    let {name,description,amount,price} = req.body
+    let product = await ProductService.updateProduct(product_id,{name,description,amount,price})
+    return res.json(product)
+}
  static async getProduct(req:Request,res:Response){
   let {product_id} = req.params
   let product = await ProductService.getProduct(product_id)
