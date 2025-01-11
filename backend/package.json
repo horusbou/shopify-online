@@ -8,7 +8,8 @@
     "dev": "ts-node-dev src/index.ts",
     "watch": "nodemon --watch src --ext ts,json --exec ts-node src/index.ts",
     "migration:generate": "npx typeorm migration:generate -d src/migration",
-    "migration:run": "npx typeorm migration:run"
+    "migration:run": "npx typeorm migration:run",
+    "seed": "ts-node src/seeder.ts"
   },
   "keywords": [],
   "author": "",

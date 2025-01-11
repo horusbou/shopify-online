@@ -7,7 +7,7 @@ import { Product } from "./Product.entity";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
-export abstract class User {
+export class User {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 

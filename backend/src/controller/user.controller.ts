@@ -32,7 +32,7 @@ export class UserController{
             res.json(updatedUser)
         } catch (error) {
             if(error instanceof HttpException)
-                next(new HttpException(400,error.message))
+                next(error)
             else 
                 next(new HttpException(400,"something went wrong"))
         }
@@ -68,7 +68,7 @@ export class UserController{
             res.json(seller)
         } catch (error) {
             if(error instanceof HttpException)
-                next(new HttpException(400,error.message))
+                next(error)
             else 
                 next(new HttpException(400,"something went wrong"))
         }

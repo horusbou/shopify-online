@@ -69,11 +69,16 @@ export class OrderController{
         }
     }
     static async cartToOrder(req:Request,res:Response, next: NextFunction){
-        //@ts-ignore
-        let user = req.user
-        if(!user)
-            return next(new HttpException(400, "something went wrong")); 
-        let cart = await OrderService.cartToOrder(user)
-        return res.json(cart)
+        try {
+            //@ts-ignore
+            let user = req.user
+            if(!user)
+                return next(new HttpException(400, "something went wrong")); 
+            let cart = await OrderService.cartToOrder(user)
+            return res.json(cart)
+        } catch (error) {
+            next(error)
+        }
+
     }
 }

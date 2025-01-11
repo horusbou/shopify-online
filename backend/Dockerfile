@@ -13,6 +13,5 @@ COPY . .
 
 EXPOSE 3000
 
-# Use nodemon for live reload during development
-CMD ["npm", "run", "watch"]
+CMD ["sh", "-c", "npm run seed && npm run watch"]
 

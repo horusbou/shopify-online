@@ -18,7 +18,10 @@ export class ProductService {
     const products = await db.products.find({ where: { vendor: { id: vendor_id } } });
     return products;
   }
-  static deleteProduct(product_id: string):Promise<DeleteResult> {
+  static async deleteProduct(product_id: string):Promise<DeleteResult> {
+    const product = await db.products.findOne({where:{id:product_id},relations:["cartProducts"]})
+    if(product && product?.cartProducts.length>0)
+      throw new HttpException(400,"you cannot remove this product")
     return db.products.delete({id:product_id})
   }
   static getAllProduct(): Promise<Product[]> {

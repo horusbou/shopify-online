@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { CartService } from "../service/cart.service";
 import { OrderService } from "../service/Order.service";
 
@@ -39,14 +39,19 @@ export class CartController{
         res.json(cart)
     }
 
-    static async addProductToCart(req:Request,res:Response){
-        const {product_id,quantity} = req.body
-        //@ts-ignore
-        let user = req.user
-        if(!user)
-            return res.status(404).json({message:"something went wrong"})
-        let cart = await CartService.addProductToCart(user,product_id,parseInt(quantity))
-        return res.json(cart)
+    static async addProductToCart(req:Request,res:Response,next:NextFunction){
+        try {
+            const {product_id,quantity} = req.body
+            //@ts-ignore
+            let user = req.user
+            if(!user)
+                return res.status(404).json({message:"something went wrong"})
+            let cart = await CartService.addProductToCart(user,product_id,parseInt(quantity))
+            return res.json(cart)
+        } catch (error) {
+            next(error)
+        }
+
     }
 
 }

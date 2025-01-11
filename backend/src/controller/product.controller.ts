@@ -1,20 +1,23 @@
-import { Request, Response } from "express"
+import { NextFunction, Request, Response } from "express"
 import { ProductService } from "../service/product.service"
 import { Product, User } from "../entity"
 
 export class ProductController {
-  static async deleteProduct(req:Request,res:Response) {
-    let {product_id} = req.params
-    let deleteResult = await ProductService.deleteProduct(product_id)
-    if(!deleteResult.affected)
-      return res.status(404).json({ message: "Something went wrong" });
-    return res.json(deleteResult)
+  static async deleteProduct(req:Request,res:Response,next:NextFunction) {
+    try {
+      let {product_id} = req.params
+      let deleteResult = await ProductService.deleteProduct(product_id)
+      if(!deleteResult.affected)
+        return res.status(404).json({ message: "Something went wrong" });
+      return res.json(deleteResult)
+    } catch (error) {
+      next(error)
+    }
   }
     static async createProduct(req:Request,res:Response) {
       let {name,price, stock: amount, description} = req.body
       const imageUrl = req.file ? `/uploads/${req.file.filename}` : "";
-      console.log("Request Body:", req.body); // Add this
-      console.log("Name:", name, "Price:", price, "Amount:", amount);
+
       //@ts-ignore
       let vendor = req.user
       if(!vendor)
@@ -34,7 +37,15 @@ export class ProductController {
       let products = await ProductService.getAllProduct()
       return res.json(products)
   }
-  static async updateProduct(req: Request, res: Response) {
+  static async updateProduct(req: Request, res: Response,next:NextFunction) {
+    try {
+        let {product_id} = req.params
+        let {name,description,amount,price} = req.body
+        let product = await ProductService.updateProduct(product_id,{name,description,amount,price})
+        return res.json(product)
+    } catch (error) {
+      next(error)
+    }
     let {product_id} = req.params
     let {name,description,amount,price} = req.body
     let product = await ProductService.updateProduct(product_id,{name,description,amount,price})
