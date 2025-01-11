@@ -3,9 +3,8 @@ import { parsToCartItem, useGlobalContext } from "./context/context"
 import Home from "./layout/Home"
 import Navigator from "./layout/Navigator"
 import Sidebar from "./layout/SideBar"
-import {BrowserRouter as Router, useNavigate} from "react-router-dom"
 import { jwtDecode } from "jwt-decode"
-import { apiGetUserCart, setupInterceptors } from "./utils/api"
+import { apiGetUserCart, getProducts, setupInterceptors } from "./utils/api"
 import { useError } from './context/ErrorContext';
 import ErrorModal from './components/ErrorModal';
 import { UserType } from "./types"
@@ -13,11 +12,9 @@ import { UserType } from "./types"
 function App() {
   const { state,login, setCart } = useGlobalContext()
   const { errorMessage, setErrorMessage } = useError();
-  let navigate = useNavigate();
 
   const handleClose = ()=>{
     setErrorMessage(null)
-    navigate("/")
   }
 
   useEffect(() => {
@@ -37,6 +34,14 @@ function App() {
     getCartFromBackend()
   },[])
 
+  const {setProducts} = useGlobalContext()
+  useEffect(()=>{
+    async function getProductsData(){
+        const products = await getProducts()
+        setProducts(products)
+    }
+      getProductsData()
+  },[])
 
   return (
       <>

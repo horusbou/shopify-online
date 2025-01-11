@@ -21,7 +21,7 @@ const SellerPage = () => {
   useEffect(()=>{
     setIsLoading(true)
     async function getOrders() {
-      let carts: Cart[] = (await Promise.all([getUserUnderReviewOrders()])).flat();
+      let carts: Cart[] = (await Promise.all([getUserUnderReviewOrders(),getUserInctiveOrders()])).flat();
       let refactored:Order[] = carts.map(c=>({
         id:c.id,
         customerName:c.user?.name,
@@ -35,7 +35,7 @@ const SellerPage = () => {
     }
     getOrders()
     setIsLoading(false)
-  },[orders])
+  },[])
 
 
   const handleViewOrder = (order:any)=>{
@@ -85,15 +85,23 @@ const SellerPage = () => {
                 <TableCell>{order.totalAmount} USD</TableCell>
                 <TableCell>{order.status}</TableCell>
                 <TableCell>
+                  {
+                    order.status === 'under_review' ?
+                    <>
                       <ValidateButton onClick={() => handleValidateOrder(order.id)}>
                         Validate Order
                       </ValidateButton>
                       <CancelButton onClick={() => handleCancelOrder(order.id)}>
                         Cancel Order
                       </CancelButton>
-                      <ViewButton onClick={() => handleViewOrder(order)}>
+                    </>
+                    :
+                    <>
+                    <ViewButton onClick={() => handleViewOrder(order)}>
                         View Order
                       </ViewButton>   
+                    </>
+                  }
                 </TableCell>
               </tr>
             ))}
@@ -140,10 +148,10 @@ const CloseButton = styled.button`
   border: none;
   font-size: 1.8rem;
   cursor: pointer;
-  color: #888;
+  color: black;
 
   &:hover {
-    color: #000;
+    color: black;
   }
 `;
 const OrderDetailsWrapper = styled.div`
@@ -168,9 +176,6 @@ const OrderDetailsWrapper = styled.div`
       text-align: left;
     }
 
-    th {
-      background-color: #f4f4f4;
-    }
   }
 `;
 
@@ -178,26 +183,51 @@ const OrderDetailsWrapper = styled.div`
 const ProductsTable = styled.table`
   width: 100%;
   border-collapse: collapse;
+  border-radius: 0.5rem;
+  overflow: hidden;
 
   thead {
-    background-color: #28a745;
+    background-color: hsl(220, 13%, 18%);
     color: white;
   }
 
   th, td {
     padding: 1rem;
     text-align: center;
-    border: 1px solid #ddd;
+    border: 1px solid hsl(0, 0%, 90%);
+  }
+
+  th {
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
   }
 
   tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
+    background-color: hsl(220, 14%, 96%);
+  }
+
+  tbody tr:nth-child(odd) {
+    background-color: hsl(0, 0%, 100%);
   }
 
   tbody tr:hover {
-    background-color: #d4edda;
+    background-color: hsl(140, 40%, 85%);
+    transition: background-color 0.3s ease;
+  }
+
+  td {
+    font-size: 1.1rem;
+  }
+
+  caption {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: hsl(220, 13%, 30%);
+    font-weight: bold;
   }
 `;
+
 
 
 const Container = styled.div`
@@ -211,7 +241,7 @@ const Heading = styled.h1`
 
 const LoadingText = styled.p`
   font-size: 1.2rem;
-  color: #666;
+  color: black;
 `;
 
 const Table = styled.table`
@@ -223,7 +253,6 @@ const TableHeader = styled.th`
   border: 1px solid #ddd;
   padding: 10px;
   text-align: left;
-  background-color: #f4f4f4;
 `;
 
 const TableCell = styled.td`

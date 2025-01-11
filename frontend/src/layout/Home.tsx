@@ -2,9 +2,6 @@ import {  Routes, Route } from 'react-router-dom'
 import HomePage from './HomePage'
 import ProductList from './ProductList'
 import styled from 'styled-components'
-import { useGlobalContext } from '../context/context'
-import { useEffect } from 'react'
-import { getProducts } from '../utils/api'
 import Product from './Product'
 import CheckoutPage from './Checkout'
 import Login from './Login'
@@ -20,14 +17,6 @@ import EditProductPage from './admin/EditProduct'
 import AboutUsPage from './AboutUsPage'
 
 const Home = () => {
-  const {setProducts} = useGlobalContext()
-  useEffect(()=>{
-    async function getProductsData(){
-        const products = await getProducts()
-        setProducts(products)
-    }
-    getProductsData()
-},[])
 
     return (
         <PageWrapper>

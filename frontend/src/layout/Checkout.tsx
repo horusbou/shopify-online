@@ -2,11 +2,13 @@ import styled from 'styled-components'
 import { useGlobalContext } from '../context/context'
 import { useNavigate } from 'react-router-dom';
 import { cartToOrder } from '../utils/api';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import ErrorModal from '../components/ErrorModal';
 
 const CheckoutPage = () => {
   const { state: { cart, user },setCart } = useGlobalContext();
   const navigate = useNavigate();
+  const [adressError,setAdressError] = useState(false)
 
   const calculateTotal = () => {
     return cart.reduce((total, item) => total + item.price * item.amount, 0)
@@ -33,11 +35,14 @@ const CheckoutPage = () => {
     if(user?.address && user?.city && user?.country){
       await cartToOrder()
       setCart([])
+    }else{
+      setAdressError(true)
     }
   }
 
   return (
     <CheckoutWrapper>
+      {adressError && <ErrorModal  message="you need to add adresse to proceed." onClose={()=>setAdressError(false)} />}
       <h1>Checkout</h1>
       <div className="order-summary">
         <h2>Order Summary</h2>
