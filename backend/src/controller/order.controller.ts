@@ -3,6 +3,20 @@ import { OrderService, OrderStatus } from "../service/Order.service";
 import HttpException from "../lib/HttpException";
 
 export class OrderController{
+    static async validateOrder(req: Request, res: Response, next: NextFunction) {
+        const { order_id } = req.params;
+        //@ts-ignore
+        let user = req.user
+        if(!user)
+            return next(new HttpException(400, "something went wrong")); 
+        try {
+            const orders = await OrderService.validateCartUnderReview(user,order_id);
+            return res.json(orders);
+        } catch (error) {
+            next(error);
+        }
+    }
+
     static async deleteOrder(req: Request, res: Response, next: NextFunction) {
         const { order_id } = req.params;
         //@ts-ignore

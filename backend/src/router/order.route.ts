@@ -27,5 +27,9 @@ orderRoutes.delete(
   OrderController.deleteOrder
 );
 
-
+orderRoutes.post(
+  '/orders/:order_id',
+  requiresUser,
+  OrderController.validateOrder
+);
 export default orderRoutes;

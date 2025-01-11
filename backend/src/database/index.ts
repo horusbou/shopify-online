@@ -8,12 +8,13 @@ const database = process.env.DB_NAME;
 const host = process.env.DB_HOST || 'localhost';
 const port = parseInt(process.env.DB_PORT || '5432');
 
-// console.log({
-//   host: process.env.DB_HOST,
-//   port: process.env.DB_PORT,
-//   user: process.env.DB_USER, userPassword: process.env.DB_USER_PASSWORD,
-//   database: process.env.DB_NAME,
-// });
+ console.log({
+   host: process.env.DB_HOST,
+   port: process.env.DB_PORT,
+   user: process.env.DB_USER, 
+   userPassword: process.env.DB_PASSWORD,
+   database: process.env.DB_NAME,
+ });
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
