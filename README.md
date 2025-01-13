@@ -12,9 +12,17 @@ Le projet a commencé par le développement du backend, qui a servi de base pour
 1. Assurez-vous que Docker est installé sur votre système.
 2. Utilisez la commande suivante pour construire et exécuter le projet :
    ```bash
-   docker compose up --build
+   docker compose up
    ```
+
+Réexécutez la commande si vous avez trouvé une erreur concernant les ports
+
 Une fois le projet lancé, vous pouvez y accéder à l'URL suivante : http://localhost:3002
+
+role: (email/password)
+admin: (admin@example.com/1234)
+seller: (seller@example.com/1234)
+customer: (customer@example.com/1234)
 
 Crédits:
 **Hamza Bouqal

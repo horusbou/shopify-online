@@ -28,8 +28,10 @@ function App() {
       login(user)
     }
     const getCartFromBackend = async ()=>{
-      const cart = await apiGetUserCart()
-      setCart(parsToCartItem(cart))
+      if(state?.user){
+        const cart = await apiGetUserCart()
+        setCart(parsToCartItem(cart))
+      }
     }
     getCartFromBackend()
   },[state.shouldRefetch])

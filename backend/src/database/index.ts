@@ -24,7 +24,7 @@ export const AppDataSource = new DataSource({
   username: user,
   password: userPassword,
   database,
-  synchronize: false,
+  synchronize: true,
   logging: true,
   entities: [User, Session, Product, Order, Cart,CartProduct,Category],
   subscribers: [],

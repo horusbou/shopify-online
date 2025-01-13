@@ -9,7 +9,7 @@ const orderRoutes = express.Router();
 orderRoutes.get(
     '/orders/:type',
     requiresUser,
-    checkRole(["seller","admin"]),
+    checkRole(["vendor","admin"]),
     OrderController.getAllOrders
   );
 orderRoutes.get(
@@ -26,14 +26,14 @@ orderRoutes.get(
 orderRoutes.delete(
   '/orders/:order_id',
   requiresUser,
-  checkRole(["seller","admin"]),
+  checkRole(["vendor","admin"]),
   OrderController.deleteOrder
 );
 
 orderRoutes.post(
   '/orders/:order_id',
   requiresUser,
-  checkRole(["seller","admin"]),
+  checkRole(["vendor","admin"]),
   OrderController.validateOrder
 );
 export default orderRoutes;

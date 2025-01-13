@@ -103,10 +103,10 @@ async function seed() {
     product5.image = "/uploads/products/dining-table.png";
     product5.categories = [furniture];
 
-    db.products.save(product1)
-    db.products.save(product2)
-    db.products.save(product3)
-    db.products.save(product4)
+    await db.products.save(product1)
+    await db.products.save(product2)
+    await db.products.save(product3)
+    await db.products.save(product4)
 
 
 

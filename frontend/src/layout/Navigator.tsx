@@ -42,7 +42,7 @@ const Navigator = () => {
       case "admin":
         roleBasedLinks = [...customerNavLink, ...sellerNavLink, ...adminNavLink];
         break;
-      case "seller":
+      case "vendor":
         roleBasedLinks = [...customerNavLink, ...sellerNavLink];
         break;
       case "customer":
@@ -51,13 +51,18 @@ const Navigator = () => {
       default:
         roleBasedLinks = [...customerNavLink];
     }
+    if(categories){
+      const categoryLinks = categories?.map((category) => ({
+        name: category.name,
+        to: `/products/category/${category.id}`,
+      }));
+      return [...baseLinks, { name: "Categories", children: categoryLinks }, ...roleBasedLinks];
+    }else {
+      return [...baseLinks, ...roleBasedLinks];
 
-    const categoryLinks = categories.map((category) => ({
-      name: category.name,
-      to: `/products/category/${category.id}`,
-    }));
+    }
 
-    return [...baseLinks, { name: "Categories", children: categoryLinks }, ...roleBasedLinks];
+
   };
 
   const links = getNavLinksByRole(state.user?.role);
