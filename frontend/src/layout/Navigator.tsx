@@ -51,7 +51,7 @@ const Navigator = () => {
       default:
         roleBasedLinks = [...customerNavLink];
     }
-    if(categories){
+    if(categories && categories?.length>0){
       const categoryLinks = categories?.map((category) => ({
         name: category.name,
         to: `/products/category/${category.id}`,
