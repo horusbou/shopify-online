@@ -20,13 +20,18 @@ Réexécutez la commande si vous avez trouvé une erreur concernant les ports
 Une fois le projet lancé, vous pouvez y accéder à l'URL suivante : http://localhost:3002
 
 role: (email/password)
+
 admin: (admin@example.com/1234)
+
 seller: (seller@example.com/1234)
+
 customer: (customer@example.com/1234)
 
 Crédits:
+
 **Hamza Bouqal
-**Ousama Soubhi
+
+**Sobhi Oussama
 
 
 
