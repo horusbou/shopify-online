@@ -1,6 +1,7 @@
 import db from "../database";
 import { User } from "../entity";
 import HttpException from "../lib/HttpException";
+import bcrypt from 'bcrypt';
 
 export class UserService{
   static async disableSeller(seller_id: string):Promise<User> {
@@ -23,14 +24,16 @@ export class UserService{
     static async getSeller(user_id:string):Promise<User|null> {
       return await db.users.findOne({where:{role:"customer",id:user_id}})
   }
-    static async updateUser({ user, name, address, city, postcode, country }:{ user:User,name:string, address:string, city:string, postcode:number, country:string }):Promise<User>{
+    static async updateUser({ user, name, address, city, country,password }:{ user:User,name:string, address:string, city:string, password:string, country:string }):Promise<User>{
         if (!name || !address || !city || !country) {
             throw new HttpException(400,"all fields are required")
         }
+        const salt = await bcrypt.genSalt(10);
+        const hashed = await bcrypt.hash(password, salt);
 
         const result = await db.users.update(
             { id: user.id },
-            { name, address, city, country } // add postCode
+            { name, address, city, country,password:hashed }
           );
 
           if (result.affected === 0) {

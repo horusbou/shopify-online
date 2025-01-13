@@ -11,9 +11,9 @@ export class UserController{
         let user = req.user;
         if(!user)
             return next(new HttpException(400,"you need to be logged in"))
-        const { name, address, city, postcode, country } = req.body;
+        const { name, address, city, postcode, country,password } = req.body;
         try {
-            let updatedUser = (await UserService.updateUser({user,name,address,city,postcode,country}))
+            let updatedUser = (await UserService.updateUser({user,name,address,city,country,password}))
             const session = await db.sessions.findOne({where:{ user:{id:user.id}, valid:true }})
             if (!session) {
                 return next(new HttpException(404, "Session creation failed"));
@@ -29,7 +29,7 @@ export class UserController{
                 httpOnly: true,
               });
 
-            res.json({user:updatedUser,accessToken})
+            res.json({user:omit(updatedUser, 'password'),accessToken})
         } catch (error) {
             if(error instanceof HttpException)
                 next(error)

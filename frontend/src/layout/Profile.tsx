@@ -19,6 +19,7 @@ const Profile = () => {
       name: user?.name || "",
       email: user?.email || "",
       username: user?.username || "",
+      password:"",
       address: user?.address || "",
       city:user?.city||"",
       country:user?.country || ""
@@ -53,7 +54,7 @@ const Profile = () => {
   const handleEditClick = () => {
     setIsEditing(true);
   };
-
+  
   return (
     <ProfileWrapper>
       <h1>User Profile</h1>
@@ -81,6 +82,17 @@ const Profile = () => {
             disabled={true}
           />
           {formik.touched.email && formik.errors.email && <div className="error">{formik.errors.email}</div>}
+        </div>
+        <div className="form-field">
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            disabled={!isEditing}
+          />
         </div>
         <div className="form-field">
           <input
