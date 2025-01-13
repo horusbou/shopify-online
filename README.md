@@ -12,6 +12,11 @@ Le projet a commencé par le développement du backend, qui a servi de base pour
 1. Assurez-vous que Docker est installé sur votre système.
 2. Utilisez la commande suivante pour construire et exécuter le projet :
    ```bash
+   docker compose up --build
+   ```
+3. Arrêtez le projet avec CTRL+C.
+4. relancer le project    
+   ```bash
    docker compose up
    ```
 
