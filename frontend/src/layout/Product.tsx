@@ -9,10 +9,11 @@ import { Product as ProductType  } from "../types"
 
 const Product = () => {
   const { id } = useParams<{ id: string }>();
-  const [data,setData] = useState<ProductType>()
+  const [data,setData] = useState<ProductType>({})
   useEffect(()=>{
     const getProductDetails = async ()=>{
       const data = await getProduct<ProductType>(id as string)
+      console.log(Array(data.image).map((img,idx)=>({url:"http://localhost:3000"+img,alt:idx})))
       setData(data)
     }
     getProductDetails()
@@ -20,8 +21,8 @@ const Product = () => {
   return (
     <ProductWrapper>
       <ImageCarousel
-        productImages={Array(data?.image).map((img,idx)=>({url:"http://localhost:3000"+img,alt:idx}))}
-        productThumbnails={Array(data?.image).map((img,idx)=>({url:"http://localhost:3000"+img,alt:idx}))}
+        productImages={Array(data.image).map((img,idx)=>({url:"http://localhost:3000"+img,alt:idx}))}
+        productThumbnails={Array(data.image).map((img,idx)=>({url:"http://localhost:3000"+img,alt:idx}))}
       />
       <ProductInfo {...data} />
     </ProductWrapper>

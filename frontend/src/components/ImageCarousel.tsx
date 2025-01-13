@@ -10,6 +10,7 @@ interface Props{
   productThumbnails:string[];
 }
 const ImageCarousel = ({ productImages, productThumbnails }:Props) => {
+  console.log("productImages", {productImages, productThumbnails })
   const [imageIndex, setImageIndex] = useState(0)
   const {
     state: { screenWidth, showingOverlay },

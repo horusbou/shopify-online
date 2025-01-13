@@ -14,7 +14,7 @@ const ImageOverlay = ({
   setImageIndex,
 }) => {
   const { hideImageOverlay } = useGlobalContext()
-
+console.log("ImageOverlay",{  productImages, productThumbnails})
   return (
     <OverlayWrapper>
       <div className="inner-overlay">
