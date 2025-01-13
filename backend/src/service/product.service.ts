@@ -2,6 +2,7 @@ import db from "../database";
 import { Product, User } from "../entity";
 import { DeleteResult } from "typeorm";
 import HttpException from "../lib/HttpException";
+import { omit } from "lodash";
 
 export class ProductService {
   static async updateProduct(product_id: string,productData:Partial<Product>) {
@@ -9,9 +10,18 @@ export class ProductService {
     if (!product) {
       throw new HttpException(400,'Product not found');
     }
-  
-    Object.assign(product, productData);
+    const categories = (
+      await Promise.all((productData.categories ?? []).map(async (cat) => db.categories.findBy({ id: cat.id })))
+    ).flat();
     
+    Object.assign(product, omit(productData,"categories"));
+    categories.map(async (cat)=>{
+      const category  = await db.categories.findOne({where:{id:cat.id},relations:["products"]})
+      if(category){
+        category?.products.push(product)
+        await db.categories.save(category)
+      }
+    })
     await db.products.save(product);  
   }
   static async getProductsByVendor(vendor_id: string):Promise<Product[]> {
@@ -25,10 +35,10 @@ export class ProductService {
     return db.products.delete({id:product_id})
   }
   static getAllProduct(): Promise<Product[]> {
-    return db.products.find()
+    return db.products.find({relations:['categories']})
   }
   static getProduct(product_id: string): Promise<Product | null> {
-    return db.products.findOneBy({ id: product_id })
+    return db.products.findOne({where:{ id: product_id },relations:["categories"]})
   }
   static getVendorProduct(vendor_id: string): Promise<Product[]> {
     return db.products.findBy({ vendor: { id: vendor_id } })

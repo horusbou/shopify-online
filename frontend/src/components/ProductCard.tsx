@@ -1,14 +1,15 @@
 import { Link } from "react-router-dom"
 import styled from "styled-components"
 
+
 const ProductCard = ({
   id,
-  companyName,
-  name,
-  description,
-  price,
-  isOnSale,
-  salePercent,
+  companyName = "N/A",
+  name= "N/A",
+  description= "No description available.",
+  price=0,
+  isOnSale = false,
+  salePercent=0,
   image
 }: Props) => {
   return (
@@ -156,14 +157,6 @@ interface Props {
 }
 
 
-ProductCard.defaultProps = {
-  companyName: "N/A",
-  name: "N/A",
-  description: "No description available.",
-  price: 0,
-  isOnSale: false,
-  salePercent: 0,
-}
 
 
 export default ProductCard

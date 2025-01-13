@@ -1,6 +1,7 @@
 import path from "path";
 import db, { AppDataSource } from "./database";
 import { Product, User } from "./entity";
+import { Category } from "./entity/Category";
 
 async function seed() {
   try {
@@ -52,23 +53,62 @@ async function seed() {
         return;
     }
 
+    const electronics = new Category();
+    electronics.name = "Electronics";
+
+    const furniture = new Category();
+    furniture.name = "Furniture";
+
+    await db.categories.save(electronics)
+    await db.categories.save(furniture)
+
     const product1 = new Product();
-    product1.name = "Sample Product 1";
-    product1.description = "This is a sample product.";
-    product1.price = 25.99;
+    product1.name = "Smartphone";
+    product1.price = 699.99;
     product1.amount = 100;
-    product1.image="uploads/image-product-1.jpg";
+    product1.description = "A high-performance smartphone with great features.";
+    product1.image = "/uploads/products/smartphone.jpg";
+    product1.categories = [electronics];
 
     const product2 = new Product();
-    product2.name = "Sample Product 2";
-    product2.description = "Another great product.";
-    product2.price = 15.49;
+    product2.name = "Laptop";
+    product2.price = 1299.99;
     product2.amount = 50;
-    product2.image="uploads/image-product-1.jpg";
+    product2.description = "Powerful laptop with a sleek design.";
+    product2.image = "/uploads/products/laptop.jpg";
+    product2.categories = [electronics];
+
+    const product3 = new Product();
+    product3.name = "Smartwatch";
+    product3.price = 199.99;
+    product3.amount = 150;
+    product3.description = "Stylish smartwatch with fitness tracking.";
+    product3.image = "/uploads/products/smartwatch.png";
+    product3.categories = [electronics];
 
 
-    await db.products.save(product1);
-    await db.products.save(product2);
+    const product4 = new Product();
+    product4.name = "Sofa";
+    product4.price = 399.99;
+    product4.amount = 20;
+    product4.description = "A comfortable 3-seater sofa.";
+    product4.image = "/uploads/products/sofa.png";
+    product4.categories = [furniture];
+
+    const product5 = new Product();
+    product5.name = "Dining Table";
+    product5.price = 499.99;
+    product5.amount = 10;
+    product5.description = "A spacious dining table for 6 people.";
+    product5.image = "/uploads/products/dining-table.png";
+    product5.categories = [furniture];
+
+    db.products.save(product1)
+    db.products.save(product2)
+    db.products.save(product3)
+    db.products.save(product4)
+
+
 
     console.log("Database has been seeded successfully!");
     console.log("[SEED]: END");

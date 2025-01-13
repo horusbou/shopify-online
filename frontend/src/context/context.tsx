@@ -20,7 +20,9 @@ import {
   SHOW_LOGIN,
   HIDE_LOGIN,
   LOGIN,
-  LOGOUT
+  LOGOUT,
+  SET_REFETCH,
+  RESET_REFETCH
 } from "../reducer/action"
 import { Cart, Product } from "../types";
 import { UserType } from "../types";
@@ -46,7 +48,10 @@ interface AppContextType {
     setProducts:(product:Product[])=>void;
     login:(user:UserType)=>void;
     logout:()=>void;
-    setCart : (cart:Product[])=>void
+    setCart : (cart:Product[])=>void;
+    refresh:()=>void;
+    resetRefresh:()=>void;
+    
   }
 const defaultAppContext: AppContextType = {
   state: defaultState,  // assuming defaultState is typed
@@ -68,7 +73,9 @@ const defaultAppContext: AppContextType = {
   setProducts:(_product:Product[])=>{},
   login: ()=>{},
   logout:()=>{},
-  setCart:(cart:Product[])=>{}
+  setCart:(cart:Product[])=>{},
+  refresh:()=>{},
+  resetRefresh:()=>{}
 }
 
 export default defaultAppContext;
@@ -101,6 +108,13 @@ const AppProvider = ({ children }:{children:React.ReactNode}) => {
 
   const hideCart = () => {
     dispatch({ type: HIDE_CART })
+  }
+  const refresh = ()=>{
+    dispatch({ type: SET_REFETCH });
+  }
+
+  const resetRefresh = ()=>{
+    dispatch({ type: RESET_REFETCH });
   }
 
   const showLogin = () => {
@@ -205,7 +219,9 @@ const AppProvider = ({ children }:{children:React.ReactNode}) => {
         hideLogin,
         login,
         logout,
-        setCart
+        setCart,
+        refresh,
+        resetRefresh
       }}
     >
       {children}

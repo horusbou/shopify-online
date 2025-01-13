@@ -1,45 +1,65 @@
-import { Logo, Menu, Cart } from "../icons/index"
-import avatar from "../assets/logo.svg"
-import FloatingCart from "../components/FloatingCart"
-import { useGlobalContext } from "../context/context"
-import styled from "styled-components"
-import { Link } from "react-router-dom"
-import FloatingLogin from "../components/FloatingLogin"
+import { Logo, Menu, Cart } from "../icons/index";
+import avatar from "../assets/logo.svg";
+import FloatingCart from "../components/FloatingCart";
+import { useGlobalContext } from "../context/context";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
+import FloatingLogin from "../components/FloatingLogin";
+import { getCategories } from "../utils/api";
+import { useEffect, useState } from "react";
+import { Category } from "../types";
 
-
-
-const customerNavLink = [
-  { name: "products", to: "/products" },
-  { name: "men", to: "/men" },
-  { name: "women", to: "/women" },
-  { name: "about", to: "/about" },
-];
+const customerNavLink: { name: string; to: string }[] = [];
 
 const adminNavLink = [
   { name: "sellers", to: "/admin/sellers" },
-  { name: "manage products", to: "/admin/products" }
-]
+  { name: "manage products", to: "/admin/products" },
+  { name: "manage categories", to: "/admin/categories" },
+];
 
-const sellerNavLink = [
-  { name: "manage order", to: "/seller" },
-]
-
-const getNavLinksByRole = (role: string|undefined) => {
-  switch (role) {
-    case 'admin':
-      return [...customerNavLink, ...sellerNavLink, ...adminNavLink];
-    case 'seller':
-      return [...customerNavLink, ...sellerNavLink]; 
-    case 'customer':
-      return [...customerNavLink];
-    default:
-      return [...customerNavLink];
-  }
-};
-
+const sellerNavLink = [{ name: "manage order", to: "/seller" }];
 
 const Navigator = () => {
-  const { showSidebar, showCart, hideCart,showLogin,hideLogin, state } = useGlobalContext()
+  const { showSidebar, showCart, hideCart, showLogin, hideLogin, state } = useGlobalContext();
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    const getCategory = async () => {
+      const fetchedCategories = await getCategories();
+      setCategories(fetchedCategories);
+    };
+    getCategory();
+  }, []);
+
+  const getNavLinksByRole = (role: string | undefined) => {
+    const baseLinks = [
+      { name: "Home", to: "/" },
+      { name: "Products", to: "/products" },
+    ];
+
+    let roleBasedLinks: { name: string; to: string }[] = [];
+    switch (role) {
+      case "admin":
+        roleBasedLinks = [...customerNavLink, ...sellerNavLink, ...adminNavLink];
+        break;
+      case "seller":
+        roleBasedLinks = [...customerNavLink, ...sellerNavLink];
+        break;
+      case "customer":
+        roleBasedLinks = [...customerNavLink];
+        break;
+      default:
+        roleBasedLinks = [...customerNavLink];
+    }
+
+    const categoryLinks = categories.map((category) => ({
+      name: category.name,
+      to: `/products/category/${category.id}`,
+    }));
+
+    return [...baseLinks, { name: "Categories", children: categoryLinks }, ...roleBasedLinks];
+  };
+
   const links = getNavLinksByRole(state.user?.role);
 
   return (
@@ -53,22 +73,33 @@ const Navigator = () => {
             <Logo />
           </a>
           <ul className="nav-links">
-            {links.map((link) => {
-              return (
+            {links.map((link) =>
+              link.children ? (
+                <li key={link.name} className="dropdown">
+                  <span className="dropdown-title">{link.name}</span>
+                  <ul className="dropdown-menu">
+                    {link.children.map((childLink) => (
+                      <li key={childLink.name}>
+                        <Link to={childLink.to}>{childLink.name}</Link>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ) : (
                 <li key={link.name}>
-                    <Link  to={link.to} >{link.name}</Link>
+                  <Link to={link.to}>{link.name}</Link>
                 </li>
               )
-            })}
+            )}
           </ul>
         </div>
         <div className="nav-right">
           <button
             onClick={() => {
               if (state.showingCart) {
-                hideCart()
+                hideCart();
               } else {
-                showCart()
+                showCart();
               }
             }}
             className="cart-btn"
@@ -76,13 +107,16 @@ const Navigator = () => {
             <Cart />
             {state.totalCartSize > 0 && <span>{state.totalCartSize}</span>}
           </button>
-          <button className="avatar-btn"  onClick={()=>{
+          <button
+            className="avatar-btn"
+            onClick={() => {
               if (state.showLogin) {
-                hideLogin()
+                hideLogin();
               } else {
-                showLogin()
+                showLogin();
               }
-            }}>
+            }}
+          >
             <img src={avatar} alt="avatar" />
           </button>
           <FloatingCart className={`${state.showingCart ? "active" : ""}`} />
@@ -90,8 +124,8 @@ const Navigator = () => {
         </div>
       </nav>
     </NavigatorWrapper>
-  )
-}
+  );
+};
 
 const NavigatorWrapper = styled.header`
   position: relative;
@@ -123,6 +157,47 @@ const NavigatorWrapper = styled.header`
 
     .nav-links {
       display: none;
+    }
+
+    .dropdown {
+      position: relative;
+
+      .dropdown-title {
+        cursor: pointer;
+        font-size: 1.5rem;
+        text-transform: capitalize;
+        color: hsl(var(--dark-grayish-blue));
+      }
+
+      .dropdown-menu {
+        display: none;
+        position: absolute;
+        background-color: hsl(var(--white));
+        border: 1px solid hsl(var(--divider));
+        border-radius: 0.4rem;
+        padding: 1rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+        list-style: none;
+      }
+
+      &:hover .dropdown-menu {
+        display: block;
+      }
+
+      a {
+        text-decoration: none;
+        display: block;
+        padding: 0.5rem 1rem;
+        font-size: 1.4rem;
+        color: hsl(var(--dark-grayish-blue));
+        border-radius: 0.4rem;
+      }
+
+      a:hover {
+        background-color: hsl(var(--pale-orange));
+        color: hsl(var(--very-dark-blue));
+      }
     }
   }
 
@@ -165,13 +240,13 @@ const NavigatorWrapper = styled.header`
   }
 
   @media only screen and (min-width: 768px) {
-    padding-bottom: 4rem;
     .nav-left {
       .nav-links {
         display: flex;
         gap: 3.2rem;
         list-style: none;
         margin-left: 3rem;
+
         a {
           text-decoration: none;
           font-size: 1.5rem;
@@ -182,36 +257,13 @@ const NavigatorWrapper = styled.header`
     }
 
     .nav-right {
-      gap: 2.4rem;
-
       .avatar-btn {
-        height: 3.5rem;
-        width: 3.5rem;
         &:hover {
           outline: 2px solid hsl(var(--orange));
         }
       }
     }
   }
+`;
 
-  @media only screen and (min-width: 1000px) {
-    padding: 4rem 0 4rem;
-    max-width: 80%;
-    margin: 0 auto;
-
-    .nav-right {
-      gap: 4.7rem;
-      justify-content: space-between;
-      .avatar-btn {
-        height: 5rem;
-        width: 5rem;
-
-        img {
-          width: 100%;
-        }
-      }
-    }
-  }
-`
-
-export default Navigator
+export default Navigator;

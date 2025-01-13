@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CreatedSession, Order, Product, SignUpUser, UserLogin } from "../types";
+import { Category, CreatedSession, Order, Product, SignUpUser, UserLogin } from "../types";
 import { UserType } from "../types";
 import { Cart, CartItem } from "../types/Cart";
 
@@ -141,4 +141,14 @@ export const addProducts = (formData:FormData)=>{
 export const updateProduct = (product_id:string,productData:Partial<Product>)=>{
   return api.post("/products/"+product_id,productData)
 }
+
+export const getCategories = ():Promise<Category[]> => api.get("/categories");
+export const updateCategory = (category_id:string,name:string):Promise<Category>=>api.put(`/categories/${category_id}`,{name})
+export const addNewCategory = (name:string):Promise<Category> => api.post("/categories",{name})
+export const getProductsByCategory = (categoryId: string):Promise<Product[]> => api.get(`/categories/${categoryId}/products`);
+export const deleteCategory = (categoryId: string) => api.delete(`/categories/${categoryId}`);
+export const removeProductFromCategory = (categoryId: string, productId: string) =>
+  api.delete(`/categories/${categoryId}/products/${productId}`);
+
+
 export default api;

@@ -1,5 +1,5 @@
 import { Product } from "../types";
-import { ActionType, HIDE_SIDEBAR, SHOW_OVERLAY, SHOW_SIDEBAR,HIDE_CART,HIDE_OVERLAY,INCREASE_AMOUNT,REMOVE_ITEM,DECREASE_AMOUNT,ADD_TO_CART,SHOW_CART,READ_SCREENWIDTH,UPDATE_CART,GET_TOTAL_CART, SET_PRODUCTS, SHOW_LOGIN, HIDE_LOGIN, LOGOUT, LOGIN, GET_CART } from "./action";
+import { ActionType, HIDE_SIDEBAR, SHOW_OVERLAY, SHOW_SIDEBAR,HIDE_CART,HIDE_OVERLAY,INCREASE_AMOUNT,REMOVE_ITEM,DECREASE_AMOUNT,ADD_TO_CART,SHOW_CART,READ_SCREENWIDTH,UPDATE_CART,GET_TOTAL_CART, SET_PRODUCTS, SHOW_LOGIN, HIDE_LOGIN, LOGOUT, LOGIN, GET_CART, SET_REFETCH, RESET_REFETCH } from "./action";
 import { State, defaultState } from "./defaultState";
 
 const reducer = (state: State, action: ActionType): State => {
@@ -72,6 +72,10 @@ const reducer = (state: State, action: ActionType): State => {
       return {...defaultState, user:null}
     case GET_CART:
       return {...state, cart: action.payload}
+    case SET_REFETCH:
+        return { ...state, shouldRefetch: true };
+    case RESET_REFETCH:
+        return { ...state, shouldRefetch: false };
     default:
       return state;
   }

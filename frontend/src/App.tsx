@@ -32,7 +32,7 @@ function App() {
       setCart(parsToCartItem(cart))
     }
     getCartFromBackend()
-  },[])
+  },[state.shouldRefetch])
 
   const {setProducts} = useGlobalContext()
   useEffect(()=>{
@@ -41,7 +41,7 @@ function App() {
         setProducts(products)
     }
       getProductsData()
-  },[])
+  },[state.shouldRefetch])
 
   return (
       <>

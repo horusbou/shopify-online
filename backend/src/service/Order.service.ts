@@ -1,3 +1,4 @@
+import { DeleteResult } from "typeorm";
 import db from "../database";
 import { Cart, User } from "../entity";
 import { ProductService } from "./product.service";
@@ -17,13 +18,13 @@ export class OrderService{
         return await db.carts.save(cart)
     }
 
-    static async deleteCartUnderReview(user:User,order_id:string):Promise<Cart>{
+    static async deleteCartUnderReview(user:User,order_id:string):Promise<DeleteResult>{
         let cart =  await db.carts.findOne({where:{user:{id:user.id},status:'under_review',id:order_id}}) 
         if (!cart) {
             throw new Error("No active cart found for the user.");
         }
         cart.status = "inactive"
-        return await db.carts.save(cart)
+        return await db.carts.delete({id:order_id})
     }
 
     static async validateCartUnderReview(user:User,order_id:string):Promise<Cart>{

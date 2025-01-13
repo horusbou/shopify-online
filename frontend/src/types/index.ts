@@ -24,8 +24,13 @@ export interface Product {
     salePercent?:number;
     isOnSale?: boolean;
     description:string;
+    categories?:Category[]
   }
-
+export interface Category{
+  id:string;
+  name:string;
+  products?:Product[]
+}
   export interface CartProduct {
     id: string;
     product: Product;

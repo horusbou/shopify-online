@@ -40,8 +40,9 @@ export class ProductController {
   static async updateProduct(req: Request, res: Response,next:NextFunction) {
     try {
         let {product_id} = req.params
-        let {name,description,amount,price} = req.body
-        let product = await ProductService.updateProduct(product_id,{name,description,amount,price})
+        let {name,description,amount,price,categories} = req.body
+        console.log(categories)
+        let product = await ProductService.updateProduct(product_id,{name,description,amount,price,categories})
         return res.json(product)
     } catch (error) {
       next(error)

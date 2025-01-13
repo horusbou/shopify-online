@@ -1,6 +1,7 @@
 import { User, Session, Product, Order, Cart, CartProduct } from "../entity";
 import { DataSource } from "typeorm";
 import { Database } from "../lib/types";
+import { Category } from "../entity/Category";
 
 const user = process.env.DB_USER;
 const userPassword = process.env.DB_PASSWORD;
@@ -25,7 +26,7 @@ export const AppDataSource = new DataSource({
   database,
   synchronize: false,
   logging: true,
-  entities: [User, Session, Product, Order, Cart,CartProduct],
+  entities: [User, Session, Product, Order, Cart,CartProduct,Category],
   subscribers: [],
   migrations: ["src/migration/**/*.ts"],
 });
@@ -36,7 +37,8 @@ const db: Database = {
   products: AppDataSource.getRepository(Product),
   cartProduct:AppDataSource.getRepository(CartProduct),
   carts: AppDataSource.getRepository(Cart),
-  orders: AppDataSource.getRepository(Order)
+  orders: AppDataSource.getRepository(Order),
+  categories: AppDataSource.getRepository(Category)
 };
 
 export default db;

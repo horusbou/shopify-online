@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { deleteAnOrder, getUserUnderReviewOrders,getUserInctiveOrders } from "../utils/api";
+import { deleteAnOrder, getUserUnderReviewOrders,getUserInctiveOrders, getUserActiveOrders } from "../utils/api";
 import { Cart } from "../types";
 import { useGlobalContext } from "../context/context";
 
@@ -15,7 +15,7 @@ const Orders = () => {
 
   useEffect(() => {
     async function getDataFromApi() {
-      let orders: Cart[] = ((await Promise.all([getUserUnderReviewOrders(user?.id),getUserInctiveOrders(user?.id)])).flat());
+      let orders: Cart[] = ((await Promise.all([getUserUnderReviewOrders(user?.id),getUserInctiveOrders(user?.id),getUserActiveOrders(user?.id)])).flat());
       setOrders(
         orders.map((o) => ({
           id: o.id,

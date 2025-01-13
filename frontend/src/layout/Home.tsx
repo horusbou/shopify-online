@@ -15,6 +15,8 @@ import SellerDetailsPage from './admin/SellerDetailsPage'
 import ProductsPage from './admin/Products'
 import EditProductPage from './admin/EditProduct'
 import AboutUsPage from './AboutUsPage'
+import CategoriesPage from './admin/CategoriesPage'
+import ProductsByCategoryPage from './admin/ProductsByCategoryPage'
 
 const Home = () => {
 
@@ -24,6 +26,7 @@ const Home = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/about" element={<AboutUsPage />} />
             <Route path="/products" element={<ProductList />} />
+            <Route path="/products/category/:cat_id" element={<ProductList />} />
             <Route path="/products/:id" element={<Product />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path='/login' element={<Login />} />
@@ -36,6 +39,8 @@ const Home = () => {
             <Route path="/admin/products/edit/:id" element={ <EditProductPage />} />
             <Route path="/admin/sellers" element={ <AdminSellerPage />} />
             <Route path="/admin/sellers/:id" element={<SellerDetailsPage />} />
+            <Route path="/admin/categories" element={<CategoriesPage />} />
+            <Route path="/admin/categories/:categoryId/products" element={<ProductsByCategoryPage />} />
             </Routes>
         </PageWrapper>
     )

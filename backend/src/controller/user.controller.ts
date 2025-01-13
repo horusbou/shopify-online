@@ -29,7 +29,7 @@ export class UserController{
                 httpOnly: true,
               });
 
-            res.json(updatedUser)
+            res.json({user:updatedUser,accessToken})
         } catch (error) {
             if(error instanceof HttpException)
                 next(error)

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getUserUnderReviewOrders,deleteAnOrder,getUserInctiveOrders, validateAnOrder } from '../utils/api';
 import { Cart, CartProduct } from '../types';
+import { useGlobalContext } from '../context/context';
 
 interface Order {
   id: string;
@@ -17,6 +18,7 @@ const SellerPage = () => {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const {state:{shouldRefetch}} = useGlobalContext()
 
   useEffect(()=>{
     setIsLoading(true)
@@ -35,7 +37,7 @@ const SellerPage = () => {
     }
     getOrders()
     setIsLoading(false)
-  },[])
+  },[shouldRefetch])
 
 
   const handleViewOrder = (order:any)=>{

@@ -13,6 +13,7 @@ import userRoutes from "./router/user.route";
 
 import path from "path";
 import fs from "fs";
+import categoryRoutes from "./router/category.route";
 
 const uploadDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadDir)) {
@@ -44,6 +45,7 @@ app.use(prodRoutes)
 app.use(cartRoutes)
 app.use(orderRoutes)
 app.use(userRoutes)
+app.use(categoryRoutes)
 
 
 

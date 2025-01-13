@@ -19,6 +19,8 @@ export const SET_PRODUCTS = "SET_PRODUCTS"
 export const LOGIN = "LOGIN"
 export const LOGOUT = "LOGOUT"
 export const GET_CART = "GET_CART"
+export const SET_REFETCH = "SET_REFETCH";
+export const RESET_REFETCH = "RESET_REFETCH";
 
 export type ActionType =
   | { type: typeof SHOW_SIDEBAR }
@@ -40,3 +42,5 @@ export type ActionType =
   | { type: typeof LOGIN; payload: UserType }
   | { type: typeof LOGOUT }
   | { type: typeof GET_CART; payload: Product[]}
+  | { type: typeof SET_REFETCH }
+  | { type: typeof RESET_REFETCH }

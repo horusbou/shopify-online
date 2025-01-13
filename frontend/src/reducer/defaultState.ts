@@ -13,6 +13,7 @@ export interface State {
     showingCart: boolean;
     products:Product[];
     user:UserType|null;
+    shouldRefetch:boolean
   }
 
   export const defaultState: State = {
@@ -26,5 +27,6 @@ export interface State {
     showingOverlay: false,
     showingCart: false,
     products:[],
-    user:null
+    user:null,
+    shouldRefetch:false
   };

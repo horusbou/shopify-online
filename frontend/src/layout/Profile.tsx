@@ -34,12 +34,12 @@ const Profile = () => {
     onSubmit: async (values) => {
       try {
         console.log(values)
-        let user = await updateUser(values);
-    
+        let {user,accessToken} = await updateUser(values);
+        
         setUpdatedUser(values);
         login(user)
         setIsEditing(false); 
-    
+        localStorage.setItem("accessToken",accessToken)
       } catch (error) {
         console.error("Error updating user:", error);
       }
